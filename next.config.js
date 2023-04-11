@@ -6,6 +6,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig = withBundleAnalyzer({
   eslint: {
     ignoreDuringBuilds: false,
@@ -17,7 +19,7 @@ const nextConfig = withBundleAnalyzer({
     styledComponents: true,
   },
   images: {
-    domains: ['tokens.buildspace.so', 'ipfs.io'],
+    unoptimized: true,
   },
 
   /*
