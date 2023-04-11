@@ -26,9 +26,7 @@ import { useState, useEffect } from 'react';
 
 export default function HomePage() {
   const [blockNumber, setBlockNumber] = useState<number>(0);
-  const [inputValue, setInputValue] = useState(
-    '0x3421FBaCD45c4DF3F08EF88A77343Db47f130808',
-  );
+  const [inputValue, setInputValue] = useState('');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -139,7 +137,7 @@ export default function HomePage() {
             rightSection={
               <Button
                 loaderPosition="center"
-                disabled={inputValue.length === 0}
+                disabled={inputValue.length === 0 || isLoading}
                 onClick={() => {
                   console.clear();
                   setIsLoading(true);
