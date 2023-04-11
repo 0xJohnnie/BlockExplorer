@@ -1,39 +1,30 @@
-# Mantine Next Template
+# Block Explorer
 
-Get started with Mantine + Next with just a few button clicks.
-Click `Use this template` button at the header of repository or [follow this link](https://github.com/mantinedev/mantine-next-template/generate) and
-create new repository with `@mantine` packages. Note that you have to be logged in to GitHub to generate template.
+The Block Explorer allows you to view the tokens owned in a wallet on the Ethereum Blockchain.
 
-## Features
+## Search
 
-This template comes with several essential features:
+You can search using one of two methods:
 
-- Server side rendering setup for Mantine
-- Color scheme is stored in cookie to avoid color scheme mismatch after hydration
-- Storybook with color scheme toggle
-- Jest with react testing library
-- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
+1. An Ethereum address consisting of 42 hexadecimal characters
+2. A valid .eth address
 
-## npm scripts
+To begin, enter the desired address into the search bar and press the search button.
 
-### Build and dev scripts
+The explorer will display all tokens associated with that address, including the token value and metadata such as name, symbol, and (if available) logo.
 
-- `dev` – start dev server
-- `build` – bundle application for production
-- `export` – exports static website to `out` folder
-- `analyze` – analyzes application bundle with [@next/bundle-analyzer](https://www.npmjs.com/package/@next/bundle-analyzer)
+## Technologies
 
-### Testing scripts
+The Block Explorer is built using React, NextJs, Mantine.dev, TypeScript, Alchemy SDK and Viem.
 
-- `typecheck` – checks TypeScript types
-- `lint` – runs ESLint
-- `prettier:check` – checks files with Prettier
-- `jest` – runs jest tests
-- `jest:watch` – starts jest watch
-- `test` – runs `jest`, `prettier:check`, `lint` and `typecheck` scripts
+## Getting started
 
-### Other scripts
+To get started, simply clone the repository and run `npm install` or `yarn` to install the necessary dependencies.
 
-- `storybook` – starts storybook dev server
-- `storybook:build` – build production storybook bundle to `storybook-static`
-- `prettier:write` – formats all files with Prettier
+Then, run `npm run dev` or `yarn dev` to launch the application in your local development environment.
+
+## Miscellaneous
+
+🚧 Please note that the public "demo" API key for Alchemy SDK may be rate limited based on traffic.
+
+To avoid this, you can replace it with your own Alchemy SDK key by edting the `REACT_APP_ALCHEMY_API_KEY` environment variable in the `.env` file.

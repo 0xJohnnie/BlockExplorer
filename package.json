@@ -14,8 +14,6 @@
     "typecheck": "tsc --noEmit",
     "export": "next build && next export",
     "lint": "next lint",
-    "jest": "jest",
-    "jest:watch": "jest --watch",
     "pc": "prettier --check \"**/*.{ts,tsx}\"",
     "pw": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "yarn prettier:check && next lint && yarn typecheck && yarn jest",
@@ -39,13 +37,14 @@
     "@mantine/prism": "^6.0.6",
     "@next/bundle-analyzer": "^13.3.0",
     "@tabler/icons-react": "^2.14.0",
+    "alchemy-sdk": "^2.7.0",
     "cookies-next": "^2.1.1",
     "dayjs": "^1.11.7",
     "embla-carousel-react": "^7.1.0",
     "next": "^13.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "yarn-upgrade-all": "^0.7.2"
+    "viem": "^0.2.12"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
@@ -54,13 +53,14 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.33",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "babel-loader": "^9.1.2",
-    "eslint": "^8.37.0",
+    "eslint": "^8.38.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-mantine": "^2.0.0",
@@ -71,9 +71,10 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.11",
     "eslint-plugin-testing-library": "^5.10.2",
-    "jest": "^29.5.0",
     "prettier": "^2.8.7",
+    "prettier-plugin-organize-imports": "^3.2.2",
     "ts-jest": "^29.1.0",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.4",
+    "yarn-upgrade-all": "^0.7.2"
   }
 }
