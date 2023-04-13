@@ -7,6 +7,7 @@
     "important": "yarn pnp is disabled"
   },
   "scripts": {
+    "deploy": "next build && touch out/.nojekyll && git add out/ && git commit -m \"Deploy\" && git subtree push --prefix out origin gh-pages",
     "dev": "next dev",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
