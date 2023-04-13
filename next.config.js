@@ -9,6 +9,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const isProd = process.env.NODE_ENV === 'production';
 
 const nextConfig = withBundleAnalyzer({
+  output: 'export',
+  basePath: '/BlockExplorer',
+  experimental: {
+    appDir: true,
+  },
   eslint: {
     ignoreDuringBuilds: false,
   },
@@ -18,11 +23,6 @@ const nextConfig = withBundleAnalyzer({
   compiler: {
     styledComponents: true,
   },
-  assetPrefix: isProd ? '/BlockExplorer/' : '',
-  images: {
-    unoptimized: true,
-  },
-
   /*
     async headers() {
       return [
