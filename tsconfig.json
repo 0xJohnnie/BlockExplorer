@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -16,6 +20,13 @@
     "incremental": true
     //   For NextAuth types augment
     //  "typeRoots": ["/types"]
+    ,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "process.d.ts",
@@ -23,7 +34,10 @@
     "next-auth.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "utils/constants.js"
+    "utils/constants.js",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

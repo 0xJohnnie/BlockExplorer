@@ -49,17 +49,22 @@ export default function HomePage() {
 
     const balanceObj: TokenBal = {};
 
-    for (let token of tokenArr) {
-      if (toEther(token.tokenBalance) > 0) {
-        const tokenDetails = await alchemy.core.getTokenMetadata(
-          token.contractAddress,
-        );
+    if (tokenArr) {
+      for (let token of tokenArr) {
+        if (toEther(token.tokenBalance) > 0) {
+          const tokenDetails = await alchemy.core.getTokenMetadata(
+            token.contractAddress,
+          );
 
-        if (balanceObj[tokenDetails.symbol] !== tokenDetails.symbol) {
-          balanceObj[tokenDetails.symbol] = {
-            tokenValue: toEther(token.tokenBalance),
-            tokenDetails,
-          };
+          if (
+            tokenDetails.symbol &&
+            balanceObj[tokenDetails.symbol] !== tokenDetails.symbol
+          ) {
+            balanceObj[tokenDetails.symbol] = {
+              tokenValue: toEther(token.tokenBalance),
+              tokenDetails,
+            };
+          }
         }
       }
     }
