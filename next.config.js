@@ -18,6 +18,7 @@ const nextConfig = withBundleAnalyzer({
   compiler: {
     styledComponents: true,
   },
+  assetPrefix: isProd ? '/BlockExplorer/' : '',
   images: {
     unoptimized: true,
   },
