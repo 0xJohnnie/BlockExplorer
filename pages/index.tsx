@@ -3,6 +3,7 @@ import {
   getBlockNumber,
   getNativeBalance,
   getTokenBalance,
+  getValidAddress,
   toEther,
 } from '../api/alchemySDK/utils';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
@@ -21,18 +22,23 @@ import {
   Group,
   UnstyledButton,
 } from '@mantine/core';
+import { getHotkeyHandler } from '@mantine/hooks';
 import { IconSearch, IconStar } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 
 export default function HomePage() {
   const [blockNumber, setBlockNumber] = useState<number>(0);
   const [inputValue, setInputValue] = useState('');
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [nativeBalance, setNativeBalance] = useState<number>(-2);
-
   const [tokenBalance, setTokenBalance] = useState<TokenBalMap[]>();
+
+  const handleSearch = () => {
+    if (!isLoading && inputValue.length > 0) {
+      setIsLoading(true);
+      getToken(inputValue);
+    }
+  };
 
   useEffect(() => {
     const getBlock = async () => {
@@ -42,49 +48,61 @@ export default function HomePage() {
   }, []);
 
   const getToken = async (address: string) => {
-    const tokenArr = await getTokenBalance(address);
-    const nativeToken = await getNativeBalance(address);
+    try {
+      const nativeToken = await getNativeBalance(address);
+      setNativeBalance(nativeToken);
 
-    setNativeBalance(nativeToken);
+      const addressIsValid = getValidAddress(address);
 
-    const balanceObj: TokenBal = {};
+      if (addressIsValid) {
+        const tokenArr = await getTokenBalance(address);
 
-    if (tokenArr) {
-      for (let token of tokenArr) {
-        if (toEther(token.tokenBalance) > 0) {
-          const tokenDetails = await alchemy.core.getTokenMetadata(
-            token.contractAddress,
-          );
+        if (tokenArr) {
+          const balanceObj: TokenBal = {};
 
-          if (
-            tokenDetails.symbol &&
-            balanceObj[tokenDetails.symbol] !== tokenDetails.symbol
-          ) {
-            balanceObj[tokenDetails.symbol] = {
-              tokenValue: toEther(token.tokenBalance),
-              tokenDetails,
-            };
+          for (let token of tokenArr) {
+            if (toEther(token.tokenBalance) > 0) {
+              const tokenDetails = await alchemy.core.getTokenMetadata(
+                token.contractAddress,
+              );
+
+              if (
+                tokenDetails.symbol &&
+                balanceObj[tokenDetails.symbol] !== tokenDetails.symbol
+              ) {
+                balanceObj[tokenDetails.symbol] = {
+                  tokenValue: toEther(token.tokenBalance),
+                  tokenDetails,
+                };
+              }
+            }
           }
+
+          const balanceArr: TokenBalMap[] = Object.entries(balanceObj)
+            .map(([key, value]) => ({
+              [key]: {
+                tokenValue: value.tokenValue,
+                tokenDetails: value.tokenDetails,
+              },
+            }))
+            .sort((a, b) => {
+              const tokenA = Object.values(a)[0];
+              const tokenB = Object.values(b)[0];
+              return tokenB.tokenValue - tokenA.tokenValue;
+            }) as TokenBalMap[];
+
+          console.warn(JSON.stringify(balanceArr));
+
+          setTokenBalance(balanceArr);
+        } else {
+          setTokenBalance([]);
         }
       }
+    } catch (e) {
+      console.error('error :\n', e);
+      setIsLoading(false);
+      return null;
     }
-
-    const balanceArr: TokenBalMap[] = Object.entries(balanceObj)
-      .map(([key, value]) => ({
-        [key]: {
-          tokenValue: value.tokenValue,
-          tokenDetails: value.tokenDetails,
-        },
-      }))
-      .sort((a, b) => {
-        const tokenA = Object.values(a)[0];
-        const tokenB = Object.values(b)[0];
-        return tokenB.tokenValue - tokenA.tokenValue;
-      }) as TokenBalMap[];
-
-    console.warn(JSON.stringify(balanceArr));
-
-    setTokenBalance(balanceArr);
     setIsLoading(false);
   };
 
@@ -138,16 +156,18 @@ export default function HomePage() {
             style={{ width: '100%' }}
             placeholder="Search by Address or .Eth name"
             value={inputValue}
-            onChange={(e) => setInputValue(e.currentTarget.value)}
+            onChange={(e) => {
+              setInputValue(e.currentTarget.value);
+              if (e.currentTarget.value.length === 0 && nativeBalance === -1) {
+                setNativeBalance(-2);
+              }
+            }}
+            onKeyDown={getHotkeyHandler([['Enter', handleSearch]])}
             rightSection={
               <Button
                 loaderPosition="center"
-                disabled={inputValue.length === 0 || isLoading}
-                onClick={() => {
-                  console.clear();
-                  setIsLoading(true);
-                  getToken(inputValue);
-                }}
+                disabled={isLoading || inputValue.length === 0}
+                onClick={handleSearch}
               >
                 <IconSearch size="1rem" />
               </Button>
